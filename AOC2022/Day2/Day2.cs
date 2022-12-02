@@ -10,7 +10,8 @@ namespace AOC2022.D2
     public class Day2 : IDay
     {
         public string[] input { get; }
-        Game game;
+        Game Game;
+        Game GameTwo;
 
         public Day2()
         {
@@ -25,45 +26,44 @@ namespace AOC2022.D2
 
         public object Part1()
         {
-            game = new Game();
+            Game = new Game(new Player(0), new Oppenent());
 
             foreach (string line in input)
             {
                 string[] roundGuide = line.Split(" ");
-                game.player.score += game.Round(roundGuide[1], roundGuide[0]);
+                Game.Player.Score += Game.Round(roundGuide[1], roundGuide[0]);
             }
-            return game.player.score;
+            return Game.Player.Score;
         }
 
         public object Part2()
         {
-            game = new Game();
+            GameTwo = new Game(new Player(0), new Oppenent());
 
             foreach (string line in input)
             {
                 string[] roundGuide = line.Split(" ");
-                game.player.score += game.Round(roundGuide[1], roundGuide[0]);
+                GameTwo.Player.Score = GameTwo.RoundPartTwo(roundGuide[1], roundGuide[0]);
             }
-            return "";
+            return GameTwo.Player.Score;
         }
     }
 
     public class Game
     {
-        public Player player { get; }
-        public Oppenent oppenent;
+        public Player Player { get; }
+        public Oppenent Opponent;
 
-        public Game()
+        public Game(Player player, Oppenent oppenent)
         {
-            this.player = new Player(0);
-            this.oppenent = new Oppenent();
+            Player = player;
+            Opponent = oppenent;
         }
-
 
         public int Round(string playerShape, string opponentShape)
         {
-            player.shape = player.mapping[char.Parse(playerShape)];
-            oppenent.shape = oppenent.mapping[char.Parse(opponentShape)];
+            Player.shape = Player.mapping[char.Parse(playerShape)];
+            Opponent.shape = Opponent.mapping[char.Parse(opponentShape)];
             return CalcPoints();
         }
 
@@ -71,55 +71,55 @@ namespace AOC2022.D2
         {
             int points = 0;
 
-            if(player.shape == Shapes.Paper)
+            if (Player.shape == Shapes.Paper)
             {
-                if(oppenent.shape == Shapes.Paper)
+                if (Opponent.shape == Shapes.Paper)
                 {
-                    points += 3 + player.shapeScores[player.shape]; 
+                    points += 3 + Player.shapeScores[Player.shape];
 
                 }
-                else if (oppenent.shape == Shapes.Siccor)
+                else if (Opponent.shape == Shapes.Siccor)
                 {
-                    points += player.shapeScores[player.shape];
+                    points += Player.shapeScores[Player.shape];
                 }
                 else
                 {
-                    points += 6 + player.shapeScores[player.shape];
+                    points += 6 + Player.shapeScores[Player.shape];
                 }
-                    
+
             }
-            else if (player.shape == Shapes.Siccor)
+            else if (Player.shape == Shapes.Siccor)
             {
-                if (oppenent.shape == Shapes.Paper)
+                if (Opponent.shape == Shapes.Paper)
                 {
-                    points += 6 + player.shapeScores[player.shape];
+                    points += 6 + Player.shapeScores[Player.shape];
 
                 }
-                else if (oppenent.shape == Shapes.Siccor)
+                else if (Opponent.shape == Shapes.Siccor)
                 {
-                    points += 3 + player.shapeScores[player.shape];
+                    points += 3 + Player.shapeScores[Player.shape];
                 }
                 else
                 {
-                    points += player.shapeScores[player.shape];
+                    points += Player.shapeScores[Player.shape];
                 }
 
             }
             // player has rock
             else
             {
-                if (oppenent.shape == Shapes.Paper)
+                if (Opponent.shape == Shapes.Paper)
                 {
-                    points += player.shapeScores[player.shape];
+                    points += Player.shapeScores[Player.shape];
 
                 }
-                else if (oppenent.shape == Shapes.Siccor)
+                else if (Opponent.shape == Shapes.Siccor)
                 {
-                    points += 6 + player.shapeScores[player.shape];
+                    points += 6 + Player.shapeScores[Player.shape];
                 }
                 else
                 {
-                    points += 3 + player.shapeScores[player.shape];
+                    points += 3 + Player.shapeScores[Player.shape];
                 }
 
             }
@@ -127,18 +127,70 @@ namespace AOC2022.D2
             return points;
         }
 
-        public int CalcPointsPartTwo()
+        // PART 2 Methods
+        public int RoundPartTwo(string playerShape, string opponentShape)
         {
-            int points = 0;
+            Opponent.shape = Opponent.mapping[char.Parse(opponentShape)];
+            Player.Condition = Player.mappingPartTwo[char.Parse(playerShape)];
+            CalcPointsPartTwo();
+            return Player.Score;
+        }
 
-            if (oppenent.shape == Shapes.Rock) { }
-            
+        public void CalcPointsPartTwo()
+        {
+            if (Player.Condition == Condition.DRAW)
+            {
+                if (Opponent.shape == Shapes.Siccor)
+                {
+                    Player.Score += 3 + Player.shapeScores[Shapes.Siccor];
+                }
+                else if (Opponent.shape == Shapes.Paper)
+                {
+                    Player.Score += 3 + Player.shapeScores[Shapes.Paper];
+                }
+                else
+                {
+                    Player.Score += 3 + Player.shapeScores[Shapes.Rock];
+                }
+            }
+            else if (Player.Condition == Condition.LOOSE)
+            {
+                if (Opponent.shape == Shapes.Siccor)
+                {
+                    Player.Score += 0 + Player.shapeScores[Shapes.Paper];
+                }
+                else if (Opponent.shape == Shapes.Paper)
+                {
+                    Player.Score += 0 + Player.shapeScores[Shapes.Rock];
+                }
+                else
+                {
+                    Player.Score += 0 + Player.shapeScores[Shapes.Siccor];
+                }
+            }
+            else
+            {
+                if (Opponent.shape == Shapes.Siccor)
+                {
+                    Player.Score += 6 + Player.shapeScores[Shapes.Rock];
+                }
+                else if (Opponent.shape == Shapes.Paper)
+                {
+                    Player.Score += 6 + Player.shapeScores[Shapes.Siccor];
+                }
+                else
+                {
+                    Player.Score += 6 + Player.shapeScores[Shapes.Paper];
+                }
+            }
         }
     }
 
     public class Player
     {
-        public int score { get; set; }
+        public int Score { get; set; }
+        public Condition Condition;
+
         public Dictionary<Shapes, int> shapeScores = new Dictionary<Shapes, int>()
         {
             {Shapes.Paper , 2 },
@@ -153,18 +205,18 @@ namespace AOC2022.D2
             {'Z', Shapes.Siccor }
         };
 
-        public Dictionary<char, int> mappingPartTwo = new Dictionary<char, int>()
+        public Dictionary<char, Condition> mappingPartTwo = new Dictionary<char, Condition>()
         {
-            {'Y', 3 },
-            {'X', 0 },
-            {'Z', 6 }
+            {'Y', Condition.DRAW },
+            {'X', Condition.LOOSE },
+            {'Z', Condition.WIN }
         };
 
         public Shapes shape { get; set; }
 
         public Player(int score)
         {
-            this.score = score;
+            this.Score = score;
 
         }
     }
@@ -191,5 +243,12 @@ namespace AOC2022.D2
         Siccor,
         Rock,
         Paper
+    }
+
+    public enum Condition
+    {
+        WIN,
+        LOOSE,
+        DRAW
     }
 }
