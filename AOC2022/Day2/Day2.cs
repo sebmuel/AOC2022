@@ -193,9 +193,9 @@ namespace AOC2022.D2
 
         public Dictionary<Shapes, int> shapeScores = new Dictionary<Shapes, int>()
         {
-            {Shapes.Paper , 2 },
             {Shapes.Rock , 1 },
-            {Shapes.Siccor, 3 }
+            {Shapes.Paper , 2 },
+            {Shapes.Siccor , 3 }
         };
 
         public Dictionary<char, Shapes> mapping = new Dictionary<char, Shapes>()
