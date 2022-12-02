@@ -62,7 +62,7 @@ namespace AOC2022.D2
         {
             bool win = false;
 
-            if(playerShaper)
+            if(playerSha)
 
             return true;
         }
@@ -78,6 +78,13 @@ namespace AOC2022.D2
             {'Z', 3 }
         };
 
+        public Dictionary<char, Shapes> mapping = new Dictionary<char, Shapes>()
+        {
+            {'Y', Shapes.Paper },
+            {'X', Shapes.Rock },
+            {'Z', Shapes.Siccor }
+        };
+
         public string _shape { get; set; }
 
         public Player(int score, string[] shapes)
@@ -90,10 +97,24 @@ namespace AOC2022.D2
     public class Oppenent
     {
         public string _shape { get; set; }
+        public Dictionary<char, Shapes> mapping = new Dictionary<char, Shapes>()
+        {
+            {'B', Shapes.Paper },
+            {'A', Shapes.Rock },
+            {'C', Shapes.Siccor }
+        };
+
 
         public Oppenent()
         {
 
         }
+    }
+
+    public enum Shapes
+    {
+        Siccor,
+        Rock,
+        Paper
     }
 }
