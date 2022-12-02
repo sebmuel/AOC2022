@@ -10,72 +10,140 @@ namespace AOC2022.D2
     public class Day2 : IDay
     {
         public string[] input { get; }
-        Game _game;
+        Game game;
 
         public Day2()
         {
-            input = ReadInput.GetInputLines(GetType().Name, true);
+            input = ReadInput.GetInputLines(GetType().Name);
         }
 
         public void Execute()
         {
-            Console.WriteLine($"Part-1 {Part1()}");
+            Console.WriteLine($"Part-1 {Part1()} points");
+            Console.WriteLine($"Part-2 {Part2()} points");
         }
 
         public object Part1()
         {
-            _game = new Game();
+            game = new Game();
 
             foreach (string line in input)
             {
                 string[] roundGuide = line.Split(" ");
-                _game.Round(roundGuide[0], roundGuide[1]);
+                game.player.score += game.Round(roundGuide[1], roundGuide[0]);
             }
-            return "";
+            return game.player.score;
         }
 
         public object Part2()
         {
-            throw new NotImplementedException();
+            game = new Game();
+
+            foreach (string line in input)
+            {
+                string[] roundGuide = line.Split(" ");
+                game.player.score += game.Round(roundGuide[1], roundGuide[0]);
+            }
+            return "";
         }
     }
 
     public class Game
     {
-        Player _player;
-        Oppenent _oppenent;
+        public Player player { get; }
+        public Oppenent oppenent;
 
         public Game()
         {
-            _player = new Player(0);
-            _oppenent = new Oppenent();
+            this.player = new Player(0);
+            this.oppenent = new Oppenent();
         }
 
 
-        public void Round(string playerShape, string opponentShape)
+        public int Round(string playerShape, string opponentShape)
         {
-            _player._shape = playerShape;
-            _oppenent._shape = opponentShape;
+            player.shape = player.mapping[char.Parse(playerShape)];
+            oppenent.shape = oppenent.mapping[char.Parse(opponentShape)];
+            return CalcPoints();
         }
 
-        public bool isWin(string playerShape, string opponentShape)
+        public int CalcPoints()
         {
-            bool win = false;
+            int points = 0;
 
-            if(playerSha)
+            if(player.shape == Shapes.Paper)
+            {
+                if(oppenent.shape == Shapes.Paper)
+                {
+                    points += 3 + player.shapeScores[player.shape]; 
 
-            return true;
+                }
+                else if (oppenent.shape == Shapes.Siccor)
+                {
+                    points += player.shapeScores[player.shape];
+                }
+                else
+                {
+                    points += 6 + player.shapeScores[player.shape];
+                }
+                    
+            }
+            else if (player.shape == Shapes.Siccor)
+            {
+                if (oppenent.shape == Shapes.Paper)
+                {
+                    points += 6 + player.shapeScores[player.shape];
+
+                }
+                else if (oppenent.shape == Shapes.Siccor)
+                {
+                    points += 3 + player.shapeScores[player.shape];
+                }
+                else
+                {
+                    points += player.shapeScores[player.shape];
+                }
+
+            }
+            // player has rock
+            else
+            {
+                if (oppenent.shape == Shapes.Paper)
+                {
+                    points += player.shapeScores[player.shape];
+
+                }
+                else if (oppenent.shape == Shapes.Siccor)
+                {
+                    points += 6 + player.shapeScores[player.shape];
+                }
+                else
+                {
+                    points += 3 + player.shapeScores[player.shape];
+                }
+
+            }
+
+            return points;
+        }
+
+        public int CalcPointsPartTwo()
+        {
+            int points = 0;
+
+            if (oppenent.shape == Shapes.Rock) { }
+            
         }
     }
 
     public class Player
     {
-        public int _score { get; set; }
-        public Dictionary<char, int> shapeScores = new Dictionary<char, int>()
+        public int score { get; set; }
+        public Dictionary<Shapes, int> shapeScores = new Dictionary<Shapes, int>()
         {
-            {'Y', 2 },
-            {'X', 1 },
-            {'Z', 3 }
+            {Shapes.Paper , 2 },
+            {Shapes.Rock , 1 },
+            {Shapes.Siccor, 3 }
         };
 
         public Dictionary<char, Shapes> mapping = new Dictionary<char, Shapes>()
@@ -85,18 +153,25 @@ namespace AOC2022.D2
             {'Z', Shapes.Siccor }
         };
 
-        public string _shape { get; set; }
-
-        public Player(int score, string[] shapes)
+        public Dictionary<char, int> mappingPartTwo = new Dictionary<char, int>()
         {
-            _score = score;
+            {'Y', 3 },
+            {'X', 0 },
+            {'Z', 6 }
+        };
+
+        public Shapes shape { get; set; }
+
+        public Player(int score)
+        {
+            this.score = score;
 
         }
     }
 
     public class Oppenent
     {
-        public string _shape { get; set; }
+        public Shapes shape { get; set; }
         public Dictionary<char, Shapes> mapping = new Dictionary<char, Shapes>()
         {
             {'B', Shapes.Paper },
