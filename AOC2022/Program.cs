@@ -1,5 +1,6 @@
 ﻿using AOC2022.D1;
 using AOC2022.D2;
+using AOC2022.D3;
 
 namespace AOC2022
 {
@@ -11,6 +12,7 @@ namespace AOC2022
         {
             Days.Add(new Day1());
             Days.Add(new Day2());
+            Days.Add(new Day3());
             
         }
         public static void Main()
