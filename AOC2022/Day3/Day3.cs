@@ -20,8 +20,8 @@ namespace AOC2022.D3
 
         public void Execute()
         {
-            Console.WriteLine($"Part1: The Priortiy Sum is {Part1()}");
-            Console.WriteLine($"Part1: The Priortiy Sum is {Part2()}");
+            Console.WriteLine($"Part-1: The Priortiy Sum is {Part1()}");
+            Console.WriteLine($"Part-2: The Priortiy Sum is {Part2()}");
         }
 
         public object Part1()

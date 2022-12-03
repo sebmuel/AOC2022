@@ -13,24 +13,26 @@ namespace AOC2022
             Days.Add(new Day1());
             Days.Add(new Day2());
             Days.Add(new Day3());
-            
         }
         public static void Main()
         {
             AOC aoc = new AOC();
 
-           foreach(IDay day in aoc.Days)
+            foreach (IDay day in aoc.Days)
             {
                 try
                 {
+                    Console.WriteLine($"{day.GetType()} \n" + $"----------------------------");
                     day.Execute();
+                    Console.WriteLine("----------------------------");
+                    Console.WriteLine();
                 }
                 catch (NotImplementedException)
                 {
                     Console.WriteLine($"Not implemented you faggot");
                 }
             }
-       
+
         }
     }
 }
