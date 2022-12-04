@@ -10,15 +10,18 @@ namespace AOC2022.D4
     public class Day4 : IDay
     {
         public string[] input { get; }
+        List<ElfPair> pairs { get; }
 
         public Day4()
         {
             input = ReadInput.GetInputLines(GetType().Name);
+            pairs = new List<ElfPair>();
         }
 
         public void Execute()
         {
-            Console.WriteLine($"{Part1()}");
+            Console.WriteLine($"Part-1: {Part1()}");
+            Console.WriteLine($"Part-2: {Part2()}");
         }
 
         public object Part1()
@@ -40,6 +43,7 @@ namespace AOC2022.D4
                 Elf elfTwo = new Elf(sectionRangeTwo);
 
                 ElfPair elfPair = new ElfPair(elfOne, elfTwo);
+                pairs.Add(elfPair);
 
                 if (elfPair.CheckSections())
                 {
@@ -51,7 +55,15 @@ namespace AOC2022.D4
 
         public object Part2()
         {
-            throw new NotImplementedException();
+            int contains = 0;
+            foreach(ElfPair pair in pairs)
+            {
+                if (pair.CheckSectionsDetailed())
+                {
+                    contains++;
+                }
+            }
+            return contains;
         }
     }
 
@@ -100,6 +112,11 @@ namespace AOC2022.D4
             {
                 return !ElfOne.Sections.Except(ElfTwo.Sections).Any();
             }
+        }
+
+        public bool CheckSectionsDetailed()
+        {
+            return ElfOne.Sections.Intersect(ElfTwo.Sections).Any();
         }
     }
 }
