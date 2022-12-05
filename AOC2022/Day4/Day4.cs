@@ -10,12 +10,12 @@ namespace AOC2022.D4
     public class Day4 : IDay
     {
         public string[] input { get; }
-        List<ElfPair> pairs { get; }
+        List<ElfPair> Pairs { get; }
 
         public Day4()
         {
             input = ReadInput.GetInputLines(GetType().Name);
-            pairs = new List<ElfPair>();
+            Pairs = new List<ElfPair>();
         }
 
         public void Execute()
@@ -29,21 +29,23 @@ namespace AOC2022.D4
             int contains = 0;
             foreach (string line in input)
             {
+                // split line on ","
                 string[] sectionAssignment = line.Split(",");
 
-                Tuple<int, int> sectionRangeOne = new Tuple<int, int>
+                // create tuples for the sectionrange example: 1-6 -> {{1,6}}
+                Tuple<int, int> sectionRangeOne = new
                     (int.Parse(sectionAssignment[0].Split("-")[0]),
                     int.Parse(sectionAssignment[0].Split("-")[1]));
 
-                Tuple<int, int> sectionRangeTwo = new Tuple<int, int>
+                Tuple<int, int> sectionRangeTwo = new
                     (int.Parse(sectionAssignment[1].Split("-")[0]),
                     int.Parse(sectionAssignment[1].Split("-")[1]));
 
-                Elf elfOne = new Elf(sectionRangeOne);
-                Elf elfTwo = new Elf(sectionRangeTwo);
+                Elf elfOne = new(sectionRangeOne);
+                Elf elfTwo = new(sectionRangeTwo);
 
-                ElfPair elfPair = new ElfPair(elfOne, elfTwo);
-                pairs.Add(elfPair);
+                ElfPair elfPair = new(elfOne, elfTwo);
+                Pairs.Add(elfPair);
 
                 if (elfPair.CheckSections())
                 {
@@ -56,7 +58,7 @@ namespace AOC2022.D4
         public object Part2()
         {
             int contains = 0;
-            foreach(ElfPair pair in pairs)
+            foreach(ElfPair pair in Pairs)
             {
                 if (pair.CheckSectionsDetailed())
                 {
@@ -77,7 +79,7 @@ namespace AOC2022.D4
             Sections = ListSections(sections.Item1, sections.Item2);
         }
 
-        private int[] ListSections(int start, int end)
+        private static int[] ListSections(int start, int end)
         {
             return Enumerable.Range(start, (end - start) + 1).ToArray();
         }
