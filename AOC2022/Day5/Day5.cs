@@ -16,12 +16,12 @@ namespace AOC2022.D5
         public Day5()
         {
             input = ReadInput.GetInputLines(GetType().Name);
-
         }
 
         public void Execute()
         {
             Console.WriteLine($"{Part1()}");
+            Console.WriteLine($"{Part2()}");
         }
 
         public object Part1()
@@ -35,9 +35,9 @@ namespace AOC2022.D5
                 int from = int.Parse(inp.Substring(inp.IndexOf("from ") + 5, inp.IndexOf(" to") - inp.IndexOf("from ") - 5));
                 int to = int.Parse(inp.Substring(inp.IndexOf("to ") + 3, inp.Length - inp.IndexOf("to ") - 3));
 
-                while(move > 0)
+                while (move > 0)
                 {
-                    Stacks[to -1].Insert(0, Stacks[from - 1].ElementAt(0));
+                    Stacks[to - 1].Insert(0, Stacks[from - 1].ElementAt(0));
                     Stacks[from - 1].RemoveAt(0);
                     move--;
                 }
@@ -45,7 +45,7 @@ namespace AOC2022.D5
 
             StringBuilder awnser = new StringBuilder();
 
-            foreach(List<char> crate in Stacks)
+            foreach (List<char> crate in Stacks)
             {
                 awnser.Append(crate[0]);
             }
@@ -54,7 +54,35 @@ namespace AOC2022.D5
 
         public object Part2()
         {
-            throw new NotImplementedException();
+            BuildStacks();
+            FillStacks();
+
+            foreach (string inp in input.Skip(InstructionLine))
+            {
+                int move = int.Parse(inp.Substring(inp.IndexOf("move ") + 5, inp.IndexOf(" from") - inp.IndexOf("move ") - 5));
+                int from = int.Parse(inp.Substring(inp.IndexOf("from ") + 5, inp.IndexOf(" to") - inp.IndexOf("from ") - 5));
+                int to = int.Parse(inp.Substring(inp.IndexOf("to ") + 3, inp.Length - inp.IndexOf("to ") - 3));
+
+                IEnumerable<char> crates = Stacks[from - 1].GetRange(0, move);
+                Stacks[from - 1].RemoveRange(0, move);
+
+                foreach (char crate in crates.Reverse())
+                {
+                    Stacks[to - 1].Insert(0, crate);
+                }
+
+
+            }
+            StringBuilder awnser = new StringBuilder();
+
+            foreach (List<char> crate in Stacks)
+            {
+                awnser.Append(crate[0]);
+            }
+            return awnser;
+
+
+
         }
 
         public void BuildStacks()
@@ -66,7 +94,7 @@ namespace AOC2022.D5
             {
                 Stacks.Add(new List<char>());
             }
-            Console.WriteLine($"{stackCount} Stacks created");
+
         }
 
         public void FillStacks()
