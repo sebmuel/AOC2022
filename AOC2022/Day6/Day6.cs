@@ -24,31 +24,28 @@ namespace AOC2022.D6
 
         public object Part1()
         {
-            int markerPosition = 0;
-            for(int i = 0; i < InputText.Length; i++)
-            {
-                char[] sequenz = InputText.Substring(i, 4).ToCharArray();
-                if(sequenz.Length == sequenz.Distinct().Count())
-                {
-                    markerPosition = i + 4;
-                    return markerPosition;
-                }
-            }
-            return markerPosition;
+            return FindMarkerPosition(4, InputText);
         }
 
         public object Part2()
         {
+            return FindMarkerPosition(14, InputText);
+        }
+
+        public static int FindMarkerPosition(int sequenzLength, string input)
+        {
             int markerPosition = 0;
-            for (int i = 0; i < InputText.Length; i++)
+            char[] chars = input.ToCharArray();
+            for(int i = 0; i < chars.Length; i++)
             {
-                char[] sequenz = InputText.Substring(i, 14).ToCharArray();
-                if (sequenz.Length == sequenz.Distinct().Count())
+                char[] sequenz = chars.Skip(i).Take(sequenzLength).ToArray();
+                if(sequenz.Length == sequenz.Distinct().Count())
                 {
-                    markerPosition = i + 14;
-                    return markerPosition;
+                    markerPosition = i + sequenzLength;
+                    break;
                 }
             }
+
             return markerPosition;
         }
     }
