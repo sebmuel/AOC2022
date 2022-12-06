@@ -13,7 +13,7 @@ namespace AOC2022.D6
 
         public Day6()
         {
-            InputText = ReadInput.GetInputText(GetType().Name, true);
+            InputText = ReadInput.GetInputText(GetType().Name);
         }
 
         public void Execute()
