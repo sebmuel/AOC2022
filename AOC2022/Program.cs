@@ -3,6 +3,7 @@ using AOC2022.D2;
 using AOC2022.D3;
 using AOC2022.D4;
 using AOC2022.D5;
+using AOC2022.D6;
 
 namespace AOC2022
 {
@@ -17,6 +18,7 @@ namespace AOC2022
             Days.Add(new Day3());
             Days.Add(new Day4());
             Days.Add(new Day5());
+            Days.Add(new Day6());
 
         }
         public static void Main()
